@@ -1,0 +1,6 @@
+[
+    {
+        "name": "Default",
+        "path": "shaders/default.frag"
+    }
+]
