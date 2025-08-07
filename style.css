@@ -1,0 +1,210 @@
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    font-family: 'Courier New', monospace;
+    background: #000;
+    outline: none;
+}
+
+#gameContainer {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    max-width: calc(100vh * 9/16);
+    max-height: calc(100vw * 16/9);
+    margin: 0 auto;
+    background: #000;
+    overflow: hidden;
+}
+
+#glslCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+#gameUI {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+}
+
+/* Top Bar */
+#topBar {
+    height: 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(10px);
+}
+
+#scoreTime { font-size: 14px; font-weight: bold; }
+#rank { font-size: 18px; font-weight: bold; text-align: center; }
+#menuBtn { background: none; border: none; color: white; font-size: 20px; cursor: pointer; padding: 5px; }
+
+/* Objective Display */
+#objective {
+    height: 15%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0.2);
+    backdrop-filter: blur(5px);
+    padding: 10px;
+}
+
+#objectiveFunction { font-size: 20px; font-weight: bold; margin-bottom: 10px; text-align: center; }
+#constraints { font-size: 14px; display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+
+/* Cards Area - vertical space reduced */
+#cardsArea {
+    height: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+}
+
+.card {
+    flex: 1;
+    max-width: 140px;
+    height: 95%;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.card:hover { transform: translateY(-3px); background: rgba(255,255,255,0.2); }
+.card-equation { font-size: 18px; font-weight: bold; text-align: center; }
+/* Effect font bigger */
+.card-effects { font-size: 13px; line-height: 1.4; text-align: center; }
+
+/* Current Status */
+#currentRGB {
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0.2);
+    backdrop-filter: blur(5px);
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Numpad - vertical space increased */
+#numpad {
+    height: 45%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 8px;
+    padding: 20px;
+}
+
+.numpad-btn {
+    background: rgba(0,0,0,0.3);
+    backdrop-filter: blur(10px);
+    color: white;
+    border: 3px solid;
+    border-radius: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.1s;
+    font-family: 'Courier New', monospace;
+}
+
+.numpad-btn:hover { background: rgba(255,255,255,0.1); transform: scale(0.98); }
+.numpad-btn:active { transform: scale(0.92); }
+
+/* Settings Overlay */
+#settingsOverlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(20px);
+    z-index: 100;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    padding: 40px;
+    text-align: center;
+}
+
+#settingsContent { font-size: 16px; line-height: 2; }
+#settingsContent h2 { margin-top: 0; }
+#closeSettings { margin-top: 30px; padding: 10px 30px; background: rgba(255,255,255,0.2); border: 2px solid white; color: white; font-size: 16px; cursor: pointer; }
+
+/* Accessibility Mode Styles */
+#accessibilityToggle {
+    margin: 20px 0;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+#accessibilityToggle input { width: 18px; height: 18px; margin-right: 10px; }
+
+.accessibility-mode #glslCanvas { display: none; }
+.accessibility-mode, .accessibility-mode #gameUI, .accessibility-mode .card, .accessibility-mode #topBar, .accessibility-mode #objective, .accessibility-mode #currentRGB, .accessibility-mode .numpad-btn {
+    background: black !important;
+    backdrop-filter: none !important;
+    border-color: white !important;
+    text-shadow: none !important;
+}
+
+.accessibility-mode #cardsArea {
+    flex-direction: column;
+    height: auto;
+    flex-grow: 1;
+    justify-content: space-around;
+    padding: 15px 0;
+    overflow-y: auto;
+}
+
+.accessibility-mode .card {
+    width: 90%;
+    max-width: 90%;
+    height: auto;
+    min-height: 120px;
+    padding: 20px;
+    border-radius: 0;
+    border-width: 1px;
+}
+
+.accessibility-mode .card-equation { font-size: 32px; margin-bottom: 15px; }
+.accessibility-mode .card-effects { font-size: 22px; line-height: 1.5; }
+.accessibility-mode #numpad { height: 40%; }
+.accessibility-mode .numpad-btn { font-size: 32px; border-radius: 0; }
